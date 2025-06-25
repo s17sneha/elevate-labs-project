@@ -1,94 +1,194 @@
-# elevate-labs-project
-#TASK-1
+# 🔐 Cyber Security Internship Report – Elevate Labs
 
-🔐 Cyber Security Project Report Title: Port Scanning and Service Enumeration using Nmap
+## 👩‍💻 Intern Name: Sneha Solanki  
+**🧪 Internship Title:** Cyber Security Internship  
+**📆 Date:** 24th June 2025  
 
-Internship: Elevate Labs - Cyber Security Internship
+---
 
-Date: 24th June 2025
+## 📌 TASK 1: Port Scanning & Service Enumeration using Nmap
 
-Tool Used: Nmap v7.95 on Kali Linux
+### 🎯 Target  
+10.215.18.143 (Local IP)
 
-Target:  10.217.5.157(Local IP)
+### 🧭 Objective  
+To discover open ports, detect running services, and assess potential vulnerabilities on a local network host using different Nmap scanning techniques.
 
-🧭 Objective To discover open ports, detect running services, and assess potential vulnerabilities on a local network host using different Nmap scanning techniques.
+---
 
-🛠️ Tools & Commands Used Command Purpose  nmap -sV  10.217.5.157 Version detection scan 
-                                          nmap -sS  10.217.5.157 SYN stealth scan (quick and less detectable) 
-                                          nmap -p- 10.217.5.157 Full port scan (1-65535 TCP ports)
+### 🛠️ Tools & Environment  
+- **Tool Used:** Nmap v7.95  
+- **OS:** Kali Linux  
 
-📊 Results Summary
+---
 
-Service Version Detection (nmap -sV) Open Ports Detected: 135/tcp – Microsoft Windows RPC
+### ⚙️ Commands Used & Their Purpose  
 
-139/tcp – NetBIOS Session Service
+ Command                          Purpose                                      |--------------------------------------------------------------------------------
+ `nmap -sV 10.215.18.143         Version detection scan                       
+ `nmap -sS 10.215.18.143`         SYN stealth scan (quick & less detectable)   
+ `nmap -p- 10.215.18.143         Full TCP port scan (1–65535)                 
 
-445/tcp – Microsoft-DS (SMB file sharing)
+---
 
-8000/tcp – Splunkd HTTP service
+### 📊 Results Summary  
 
-8009/tcp – Splunkd (remote login disabled)
+#### ➤ Service Version Detection (`-sV`)
 
-OS Detected: Microsoft Windows
+| Port    | Service                         
+|---------|----------------------------------
+| 135/tcp | Microsoft Windows RPC            
+| 139/tcp | NetBIOS Session Service         
+| 445/tcp | Microsoft-DS (SMB File Sharing) 
+| 8000/tcp| Splunkd HTTP                    
+| 8009/tcp| Splunkd (Remote login disabled)  
 
-CPE Identifier: cpe:/o:microsoft:windows
+- **OS Detected:** Microsoft Windows  
+- **CPE Identifier:** `cpe:/o:microsoft:windows`
 
-SYN Stealth Scan (nmap -sS) Confirmed the same open ports: 135, 139, 445, 8000, 8009
+#### ➤ SYN Stealth Scan (`-sS`)  
+Confirmed same open ports: `135, 139, 445, 8000, 8009`
 
-Full Port Scan (nmap -p-) Total Open Ports Found: 135, 139, 445, 8000, 8009, 49665, 49666, 49667, 49673, 49674, 62391
+#### ➤ Full Port Scan (`-p-`)  
+Additional open ports: `49665–49667, 49673–49674, 62391`
 
-Observation: Additional high-numbered ephemeral ports are open. These are usually used for dynamic client-server communication and can indicate active services or malware using open ports.
+> These high-numbered **ephemeral ports** are used for dynamic communication and may also be exploited by malware.
 
-🔍 Security Risk Analysis Port Service Potential Risk 135, 139, 445 RPC/NetBIOS/SMB High — Often targeted for Windows exploits (e.g., EternalBlue) 8000, 8009 Splunk HTTP Medium — Web-based services could be exposed without authentication 49665–49674, 62391 Unknown Medium — Dynamic ports, possibly used by internal services or malware
+---
 
-🛡️ Recommendations Disable unused services and ports to reduce the attack surface.
+### 🔍 Security Risk Analysis  
 
-Implement firewalls to filter inbound traffic.
+| Port Range       | Service           | Risk Level | Notes                                                                
+|-------------------|-------------------|-------------|-----------------------------------------------------------------------
+| 135, 139, 445     | RPC/NetBIOS/SMB   | 🔴 High     | Vulnerable to exploits like **EternalBlue**, used in **RCE** attacks  
+| 8000, 8009        | Splunk Web Ports  | 🟠 Medium   | Exposed internal services, possible **XSS / injection**               
+| 49665–62391       | Ephemeral Ports   | 🟡 Medium   | Could be tied to **malware**, **C2 channels**, or RPC-related usage   
 
-Patch vulnerabilities associated with RPC and SMB services (if exposed externally).
+---
 
-Run vulnerability scan tools like OpenVAS or Nessus on the open ports.
+### 🛡️ Recommendations  
 
-Use authentication and encryption for web-based services (Splunk).
+- 🔒 Disable unused ports/services (e.g., SMB v1)
+- 🔥 Use firewalls to block unnecessary inbound traffic
+- 🧪 Run **vulnerability scanners** like OpenVAS/Nessus
+- ✅ Enable authentication/encryption for Splunk
+- 🔄 Apply latest Windows & service-specific patches
+- 🚧 Segment network services using **DMZ/firewall rules**
 
-Based on your Nmap scan results of the host 192.168.56.1, here’s a comprehensive evaluation of the security risks associated with the discovered open ports and services:
+---
 
-🔍 Identified Open Ports & Security Risk Evaluation Port Service Description Risk Level Security Risks 135/tcp msrpc (Microsoft RPC) Handles DCOM and remote management 🔴 High - Used in remote attacks (e.g., MS03-026)
+### 📸 Screenshots  
+![image](https://github.com/user-attachments/assets/8dda4208-e160-4a3e-87a8-ef8ab003871b)
+![image](https://github.com/user-attachments/assets/50861758-b8ee-4bb3-9380-66b5e98df324)
 
-Vulnerable to DCOM buffer overflows Often exploited in lateral movement 139/tcp netbios-ssn NetBIOS session for file/printer sharing 🔴 High - Used in SMB attacks
 
-Can allow information disclosure or unauthenticated file access 445/tcp microsoft-ds (SMB over TCP) File sharing and Active Directory 🔴 High - Critical vulnerabilities (EternalBlue, WannaCry)
 
-Enables pass-the-hash, SMB relay attacks 8000/tcp Splunkd httpd Web interface for Splunk (free license) 🟠 Medium - May expose internal data/logs if unauthenticated
+---
 
-May be vulnerable to web exploits (XSS, injection) 8009/tcp Splunkd (unknown) Possibly AJP or alternate Splunk port 🟠 Medium - Could expose unauthenticated or misconfigured services
+## 🚨 TASK 2: Phishing Email Analysis Report
 
-If AJP (Apache JServ Protocol), may be vulnerable to Ghostcat 49665-49674/tcp 62391/tcp Unknown (Ephemeral ports) High ports used by Windows for dynamic service binding 🟡 Low-Medium - Could indicate active services
+### 📩 Email Analyzed  
 
-If bound by malware or backdoor, may permit remote access Often used for RPC, WMI, or malware C2 traffic 🧨 Summary of Potential Threats Remote Code Execution (RCE):
+| Field       | Value                          
+|-------------|--------------------------------  
+| **Subject** | Microsoft account password change 
+| **Sender**  | support@msupdate.net           
+| **Time**    | 4:09 PM                        
+| **Recipient** | ethan@hooksecurity.co        
 
-Ports 135, 139, and 445 are common vectors for RCE exploits.
+---
 
-Attackers can exploit these to gain remote shell or control.
+### 🔍 Phishing Indicators
 
-Privilege Escalation & Lateral Movement:
+| Indicator               | Description                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| Suspicious domain       | Domain `msupdate.net` is not Microsoft’s legitimate domain                  |
+| Sense of urgency        | Message induces fear: “Your account has been compromised”                   |
+| Clickable links         | May lead to phishing sites (malicious redirection possible)                 |
+| Generic greeting        | No personalized name – common phishing tactic                               |
+| Spoofed branding        | Uses Microsoft-like appearance to mislead users                             |
 
-Open SMB ports allow attackers to extract credentials or move laterally within a network.
+---
 
-Unsecured Web Services (Port 8000/8009):
+### 🔧 Tools Used  
 
-If Splunk or HTTP services are not secured with auth or encryption, data leaks or command injection may occur.
+- Manual inspection of email content  
+- Header analysis (e.g., MXToolbox)  
+- URL hover/preview checks (if applicable)
 
-Misconfigured Ephemeral Ports:
+---
 
-High-numbered ports could expose internal services not meant for public use.
+### 🧠 Key Learnings  
 
-Malware often hides in these dynamic ports.
+- How phishing emails **mimic brands** and induce urgency  
+- Importance of **checking sender domain** and **email headers**  
+- Awareness of **social engineering** in email attacks  
+- Recognizing typical indicators like **fake domains**, **generic greetings**, etc.
 
-Denial of Service (DoS):
+---
 
-Unpatched RPC/SMB services could be DoS’d by sending malformed packets.
+### 📚 Interview Q&A  
 
-🛡️ Recommended Mitigations Action Description 🔒 Disable SMB v1 Prevent exploits like EternalBlue by disabling SMBv1 🔥 Use Firewall Rules Block unused ports (especially 135–139, 445) from external access 🧪 Service Audits Audit Splunk/web interfaces for authentication & vulnerabilities 🧼 Patch Management Ensure Windows and Splunk are up-to-date with latest security patches 🔍 Malware Scan Scan host for malware that may be using high ephemeral ports 🚧 Network Segmentation Isolate vulnerable services in DMZ or behind VPNs/firewalls
+**Q1: What is Phishing?**  
+> A deceptive attack to steal personal information by impersonating trusted entities.
 
-Here is the attachment of this task 1:
+**Q2: What is Email Spoofing?**  
+> Faking the sender's email to appear from a legitimate source.
+
+**Q3: Why are Phishing Emails Dangerous?**  
+> They can steal **credentials**, **infect with malware**, or **trick users into financial loss**.
+
+**Q4: What to do if you receive one?**  
+> Don’t click anything. Report it. Delete it. If clicked, change your passwords immediately.
+
+---
+
+### 🛠 Helpful Tools  
+
+| Tool                         | Use Case                     |
+|------------------------------|------------------------------|
+| MXToolbox Header Analyzer    | Header & domain analysis     |
+| Google Message Header Tool   | Source path inspection       |
+| Microsoft Header Analyzer    | Outlook-specific analysis    |
+
+---
+
+### 🛡 Actions for Users on Phishing  
+
+- 🚫 Don’t click suspicious links  
+- 🚩 Report the message as phishing  
+- 🗑️ Delete immediately  
+- 🔐 Change credentials if compromised  
+- 🛡 Educate users about **social engineering**
+
+---
+
+### 📸 Screenshot  
+![image](https://github.com/user-attachments/assets/f7140a2a-7c11-4130-9555-cd60321febb3)
+
+
+
+---
+
+## 📎 Repository Info  
+
+| Section        | Info                         |
+|----------------|------------------------------|
+| 👩‍🎓 Intern      | Sneha Solanki                |
+| 🏢 Organization | Elevate Labs                 |
+| 📂 Tasks        | Port Scanning, Email Analysis |
+| 📅 Date         | 24th June 2025               |
+
+---
+
+## ⭐ Summary  
+This project demonstrates hands-on experience in:
+
+- 🔍 Network reconnaissance using **Nmap**
+- 📧 Phishing detection and analysis
+- 💡 Security risk evaluation and recommendations
+
+> ✅ Practical understanding of cybersecurity threats and mitigation strategies.
+
+---
+

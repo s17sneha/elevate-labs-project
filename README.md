@@ -190,5 +190,201 @@ This project demonstrates hands-on experience in:
 
 > ✅ Practical understanding of cybersecurity threats and mitigation strategies.
 
+
+Here’s a clean, formatted document combining **Task 3** and **Task 4** for your remote cybersecurity internship report. You can print it, submit it as a PDF, or upload it to your internship portal.
+
+---
+
+# 🛡️ Cybersecurity Internship Report
+
+**Intern Name**: Sneha Solanki
+**Mode**: Remote
+**Tasks Covered**: Task 3 – Vulnerability Assessment using OpenVAS
+Task 4 – Windows Firewall Configuration
+**Tools Used**: OpenVAS, Windows Defender Firewall, PowerShell
+**System Used**: Kali Linux & Windows 11
+**Date**: \[Insert Date]
+
+---
+
+## ✅ **Task 3 – Vulnerability Assessment Using OpenVAS**
+
+### 🎯 Objective:
+
+To identify and analyze vulnerabilities in a local system using **OpenVAS (Greenbone Community Edition)**, classify them by severity using CVSS, and recommend basic remediations.
+
+---
+
+### 🔧 Tool Used: OpenVAS
+
+**OpenVAS** (Open Vulnerability Assessment System) is an open-source vulnerability scanner used for system-wide scans. It leverages the Greenbone Security Feed to detect:
+
+* Misconfigurations
+* CVEs
+* Outdated software
+* Open ports and insecure services
+
+---
+
+### 🛠️ Steps Performed
+
+#### 1. System Update
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+#### 2. Install and Setup OpenVAS
+
+```bash
+sudo apt install openvas -y
+sudo gvm-setup
+sudo gvm-start
+```
+
+#### 3. Target Configuration
+
+* **Host IP**: 127.0.0.1
+* **Port Range**: Default (1–65535)
+* **Scan Type**: Full and Fast
+
+#### 4. Execution
+
+* Accessed Dashboard: `https://127.0.0.1:9392`
+* Created scan target and task for localhost
+* Ran scan (\~45 minutes)
+* Exported report as `scan_report.pdf`
+
+> 📸 Screenshots
+> ![image](https://github.com/user-attachments/assets/a927eb1b-fc46-4463-aedb-23844140964f)
+
+
+
+
+---
+
+### 📋 Interview Prep: OpenVAS
+
+**1. What is Vulnerability Scanning?**
+Automated detection of known security flaws in systems by comparing configurations with databases like CVE or NVT.
+
+**2. Difference Between Vulnerability Scanning vs Penetration Testing**
+
+| Scanning          | Penetration Testing |
+| ----------------- | ------------------- |
+| Automated         | Manual              |
+| Finds known flaws | Exploits flaws      |
+| Low risk          | Higher risk         |
+
+**3. Common Vulnerabilities**
+
+* Weak passwords
+* Outdated OS
+* SMBv1, Telnet, etc.
+
+**4. CVSS Scoring Table**
+
+| Score | Severity |
+| ----- | -------- |
+| 0–3.9 | Low      |
+| 4–6.9 | Medium   |
+| 7–8.9 | High     |
+| 9–10  | Critical |
+
+**5. Remediation Steps**
+
+* Patch OS/services
+* Close unused ports
+* Use firewalls
+* Disable vulnerable services
+
+---
+
+## ✅ **Task 4 – Windows Firewall Configuration on Windows 11**
+
+### 🎯 Objective:
+
+To configure basic Windows Defender Firewall rules to control network access via port filtering.
+
+---
+
+### 🧰 Tools Used:
+
+* Windows 11
+* Windows Defender Firewall
+* Telnet (testing tool)
+* PowerShell/CMD
+
+---
+
+### 🔨 Task Steps
+
+#### 1. Open Firewall
+
+```bash
+Win + R → wf.msc
+```
+
+#### 2. Created Rules
+
+✅ **Block Telnet Port 23** (Inbound Rule)
+✅ **Allow SSH Port 22** (Inbound Rule)
+
+#### 3. Enabled Telnet Client:
+
+```bash
+Settings → Optional Features → Add Telnet Client
+```
+
+#### 4. Tested in CMD:
+
+```bash
+telnet localhost 23
+
+```
+> 📸 Screenshots
+> ![image](https://github.com/user-attachments/assets/112d1b02-daf3-428d-b997-95a8e80b9977)
+> ![image](https://github.com/user-attachments/assets/04ea6d53-ca80-494c-b017-0feecd4a4cbb)
+> ![image](https://github.com/user-attachments/assets/3382c05c-fee6-45c7-9753-3d6ce53e14e7)
+> ![image](https://github.com/user-attachments/assets/fbebf3fb-a77a-4566-82c6-3f74afb57ca1)
+> ![image](https://github.com/user-attachments/assets/2d5dbe7d-9af7-43c6-961d-60c0197f2e64)
+
+
+
+
+
+
+---
+
+### 📋 Interview Prep: Firewalls
+
+**1. What is a Firewall?**
+A security device/software that filters traffic based on rules.
+
+**2. Stateful vs Stateless**
+
+| Stateless  | Stateful           |
+| ---------- | ------------------ |
+| No context | Tracks connections |
+| Faster     | More secure        |
+
+**3. NAT in Firewalls**
+
+* **SNAT**: Outbound IP mapping
+* **DNAT**: Inbound mapping
+* **PAT**: Port-based mapping
+
+**4. Why Block Port 23 (Telnet)?**
+
+* Unencrypted
+* Vulnerable to sniffing
+* Replaced by SSH (port 22)
+
+**5. Common Firewall Mistakes**
+
+* Allowing all traffic
+* Ignoring outbound rules
+* Misconfigured priorities
+
 ---
 
